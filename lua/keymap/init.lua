@@ -59,7 +59,7 @@ local plug_map = {
 	["n|<leader>cq"] = map_cr("TroubleToggle quickfix"):with_noremap():with_silent(),
 	["n|<leader>cl"] = map_cr("TroubleToggle loclist"):with_noremap():with_silent(),
 	-- Plugin nvim-tree
-	["n|<C-n>"] = map_cr("NvimTreeToggle"):with_noremap():with_silent(),
+	["n|<C-m>"] = map_cr("NvimTreeToggle"):with_noremap():with_silent(),
 	["n|<Leader>nf"] = map_cr("NvimTreeFindFile"):with_noremap():with_silent(),
 	["n|<Leader>nr"] = map_cr("NvimTreeRefresh"):with_noremap():with_silent(),
 	-- Plugin Telescope
@@ -74,8 +74,8 @@ local plug_map = {
 	["n|<Leader>fg"] = map_cu("Telescope git_files"):with_noremap():with_silent(),
 	["n|<Leader>fz"] = map_cu("Telescope zoxide list"):with_noremap():with_silent(),
 	-- Plugin accelerate-jk
-	["n|j"] = map_cmd("v:lua.enhance_jk_move('j')"):with_silent():with_expr(),
-	["n|k"] = map_cmd("v:lua.enhance_jk_move('k')"):with_silent():with_expr(),
+	["n|e"] = map_cmd("v:lua.enhance_jk_move('j')"):with_silent():with_expr(),
+	["n|u"] = map_cmd("v:lua.enhance_jk_move('k')"):with_silent():with_expr(),
 	-- Plugin vim-eft
 	["n|f"] = map_cmd("v:lua.enhance_ft_move('f')"):with_expr(),
 	["n|F"] = map_cmd("v:lua.enhance_ft_move('F')"):with_expr(),
