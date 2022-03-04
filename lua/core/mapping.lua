@@ -10,6 +10,12 @@ local def_map = {
 	["n|e"] = map_cmd("j"):with_noremap(),
 	["n|n"] = map_cmd("h"):with_noremap(),
 	["n|i"] = map_cmd("l"):with_noremap(),
+
+	["v|u"] = map_cmd("k"):with_noremap(),
+	["v|e"] = map_cmd("j"):with_noremap(),
+	["v|n"] = map_cmd("h"):with_noremap(),
+	["v|i"] = map_cmd("l"):with_noremap(),
+
 	["n|k"] = map_cmd("i"):with_noremap(),
 	["n|K"] = map_cmd("I"):with_noremap(),
 	["n|h"] = map_cmd("e"):with_noremap(),
@@ -48,8 +54,8 @@ local def_map = {
 	["c|<C-t>"] = map_cmd([[<C-R>=expand("%:p:h") . "/" <CR>]]):with_noremap(),
 	["c|w!!"] = map_cmd("execute 'silent! write !sudo tee % >/dev/null' <bar> edit!"),
 	-- Visual
-	["v|J"] = map_cmd(":m '>+1<cr>gv=gv"),
-	["v|K"] = map_cmd(":m '<-2<cr>gv=gv"),
+	["v|E"] = map_cmd(":m '>+1<cr>gv=gv"),
+	["v|U"] = map_cmd(":m '<-2<cr>gv=gv"),
 	["v|<"] = map_cmd("<gv"),
 	["v|>"] = map_cmd(">gv"),
 }
