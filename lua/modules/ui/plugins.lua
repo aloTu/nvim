@@ -44,8 +44,5 @@ ui["petertriho/nvim-scrollbar"] = {
 		require("scrollbar").setup()
 	end,
 }
-ui["wfxr/minimap"] = {
-	opt = true,
-	envent = "BufRead"
-}
+
 return ui
