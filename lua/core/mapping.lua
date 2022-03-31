@@ -23,7 +23,7 @@ local def_map = {
 	["n|j"] = map_cmd("n"):with_noremap(),
 	["n|J"] = map_cmd("N"):with_noremap(),
 	-- Vim map
-	["n|<C-x>k"] = map_cr("bdelete"):with_noremap():with_silent(),
+	["n|<C-x>k"] = map_cr("Bdelete"):with_noremap():with_silent(),
 	["n|<C-s>"] = map_cu("write"):with_noremap(),
 	["n|Y"] = map_cmd("y$"),
 	["n|D"] = map_cmd("d$"),
@@ -41,6 +41,10 @@ local def_map = {
 	["n|<C-q>"] = map_cmd(":wq<CR>"),
 	["n|<A-S-q>"] = map_cmd(":q!<CR>"),
 	["n|<leader>o"] = map_cr("setlocal spell! spelllang=en_us"),
+  ["n|sv"] = map_cr(":vsp"),
+  ["n|sh"] = map_cr(":sp"),
+  ["n|sc"] = map_cr("<C-w>c"),
+  ["n|so"] = map_cr("<C-w>o"),
 	-- Insert
 	["i|<C-s>"] = map_cmd("<Esc>:w<CR>"),
 	["i|<C-q>"] = map_cmd("<Esc>:wq<CR>"),

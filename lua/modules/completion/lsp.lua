@@ -289,10 +289,10 @@ local clangfmt = require("efmls-configs.formatters.clang_format")
 local goimports = require("efmls-configs.formatters.goimports")
 local prettier = require("efmls-configs.formatters.prettier")
 local shfmt = require("efmls-configs.formatters.shfmt")
+local rustfmt = require("modules.completion.efm.formatters.rustfmt")
 
 -- Add your own config for formatter and linter here
 
--- local rustfmt = require("modules.completion.efm.formatters.rustfmt")
 
 -- Override default config here
 
@@ -324,5 +324,5 @@ efmls.setup({
 	scss = { formatter = prettier },
 	sh = { formatter = shfmt, linter = shellcheck },
 	markdown = { formatter = prettier },
-	-- rust = {formatter = rustfmt},
+	rust = {formatter = rustfmt},
 })
