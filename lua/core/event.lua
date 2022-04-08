@@ -21,7 +21,8 @@ function autocmd.load_autocmds()
 			{
 				"BufWritePost",
 				[[$VIM_PATH/{*.vim,*.yaml,vimrc} nested source $MYVIMRC | redraw]],
-			}, -- Reload Vim script automatically if setlocal autoread
+			},
+      -- Reload Vim script automatically if setlocal autoread
 			{
 				"BufWritePost,FileWritePost",
 				"*.vim",
