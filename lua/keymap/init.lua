@@ -93,6 +93,8 @@ local plug_map = {
 	["x|ga"] = map_cmd("v:lua.enhance_align('xga')"):with_expr(),
 	-- Plugin Aerial
 	["n|<A-t>"] = map_cr("AerialToggle! right"):with_noremap():with_silent(),
+  -- Plugin UndoTree
+  ["n|<leader>u"] = map_cr("UndotreeToggle"):with_noremap():with_silent(),
 	-- Plugin split-term
 	["n|<F5>"] = map_cr("VTerm"):with_noremap():with_silent(),
 	["n|<C-w>t"] = map_cr("VTerm"):with_noremap():with_silent(),

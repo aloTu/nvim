@@ -30,6 +30,7 @@ ui["lewis6991/gitsigns.nvim"] = {
 ui["lukas-reineke/indent-blankline.nvim"] = {
 	opt = true,
 	event = "BufRead",
+  
 	config = conf.indent_blankline,
 }
 ui["akinsho/nvim-bufferline.lua"] = {
@@ -43,6 +44,10 @@ ui["petertriho/nvim-scrollbar"] = {
 	config = function()
 		require("scrollbar").setup()
 	end,
+}
+ui["mbbill/undotree"] = {
+  opt = true,
+  cmd = "UndoTreeToggle"
 }
 
 return ui

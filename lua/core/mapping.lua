@@ -23,7 +23,7 @@ local def_map = {
 	["n|j"] = map_cmd("n"):with_noremap(),
 	["n|J"] = map_cmd("N"):with_noremap(),
 	-- Vim map
-	["n|<C-x>k"] = map_cr("Bdelete"):with_noremap():with_silent(),
+	["n|<C-x>k"] = map_cr("bdelete"):with_noremap():with_silent(),
 	["n|<C-s>"] = map_cu("write"):with_noremap(),
 	["n|Y"] = map_cmd("y$"),
 	["n|D"] = map_cmd("d$"),
@@ -57,6 +57,7 @@ local def_map = {
 	["c|<C-h>"] = map_cmd("<BS>"):with_noremap(),
 	["c|<C-t>"] = map_cmd([[<C-R>=expand("%:p:h") . "/" <CR>]]):with_noremap(),
 	["c|w!!"] = map_cmd("execute 'silent! write !sudo tee % >/dev/null' <bar> edit!"),
+
 	-- Visual
 	["v|E"] = map_cmd(":m '>+1<cr>gv=gv"),
 	["v|U"] = map_cmd(":m '<-2<cr>gv=gv"),
