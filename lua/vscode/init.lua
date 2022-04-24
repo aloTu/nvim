@@ -1,57 +1,60 @@
-local bind = require("keymap.bind")
-local map_cr = bind.map_cr
-local map_cu = bind.map_cu
-local map_cmd = bind.map_cmd
+local global = require("core.global")
+local vim = vim
 
--- default map
-local def_map = {
-	-- MovceMent for colmak
-	["n|u"] = map_cmd("k"):with_noremap(),
-	["n|e"] = map_cmd("j"):with_noremap(),
-	["n|n"] = map_cmd("h"):with_noremap(),
-	["n|i"] = map_cmd("l"):with_noremap(),
 
-	["v|u"] = map_cmd("k"):with_noremap(),
-	["v|e"] = map_cmd("j"):with_noremap(),
-	["v|n"] = map_cmd("h"):with_noremap(),
-	["v|i"] = map_cmd("l"):with_noremap(),
+local disable_distribution_plugins = function()
+	vim.g.did_load_filetypes = 1
+	vim.g.did_load_fzf = 1
+	vim.g.did_load_gtags = 1
+	vim.g.did_load_gzip = 1
+	vim.g.did_load_tar = 1
+	vim.g.did_load_tarPlugin = 1
+	vim.g.did_load_zip = 1
+	vim.g.did_load_zipPlugin = 1
+	vim.g.did_load_getscript = 1
+	vim.g.did_load_getscriptPlugin = 1
+	vim.g.did_load_vimball = 1
+	vim.g.did_load_vimballPlugin = 1
+	vim.g.did_load_matchit = 1
+	vim.g.did_load_matchparen = 1
+	vim.g.did_load_2html_plugin = 1
+	vim.g.did_load_logiPat = 1
+	vim.g.did_load_rrhelper = 1
+	vim.g.did_load_netrw = 1
+	vim.g.did_load_netrwPlugin = 1
+	vim.g.did_load_netrwSettings = 1
+	vim.g.did_load_netrwFileHandlers = 1
+end
 
-	["n|k"] = map_cmd("i"):with_noremap(),
-	["n|K"] = map_cmd("I"):with_noremap(),
-	["n|h"] = map_cmd("e"):with_noremap(),
-	["n|l"] = map_cmd("u"):with_noremap(),
-	["n|j"] = map_cmd("n"):with_noremap(),
-	["n|J"] = map_cmd("N"):with_noremap(),
-	-- Vim map
-	["n|<C-s>"] = map_cu("write"):with_noremap(),
-	["n|Y"] = map_cmd("y$"),
-	["n|D"] = map_cmd("d$"),
---	["n|n"] = map_cmd("nzzzv"):with_noremap(),
---	["n|N"] = map_cmd("Nzzzv"):with_noremap(),
---	["n|J"] = map_cmd("mzJ`z"):with_noremap(),
-	["n|<A-n>"] = map_cmd("<C-w>h"):with_noremap(),
-	["n|<A-i>"] = map_cmd("<C-w>l"):with_noremap(),
-	["n|<A-e>"] = map_cmd("<C-w>j"):with_noremap(),
-	["n|<A-u>"] = map_cmd("<C-w>k"):with_noremap(),
-	["n|<A-[>"] = map_cr("vertical resize -5"):with_silent(),
-	["n|<A-]>"] = map_cr("vertical resize +5"):with_silent(),
-	["n|<A-;>"] = map_cr("resize -2"):with_silent(),
-	["n|<A-'>"] = map_cr("resize +2"):with_silent(),
-	["n|<C-q>"] = map_cmd(":wq<CR>"),
-	["n|<A-S-q>"] = map_cmd(":q!<CR>"),
-	["n|<leader>o"] = map_cr("setlocal spell! spelllang=en_us"),
-  ["n|sv"] = map_cr(":vsp"),
-  ["n|sh"] = map_cr(":sp"),
-  ["n|sc"] = map_cr("<C-w>c"),
-  ["n|so"] = map_cr("<C-w>o"),
-	-- Insert
-	["i|<C-s>"] = map_cmd("<Esc>:w<CR>"),
-	["i|<C-q>"] = map_cmd("<Esc>:wq<CR>"),
-	-- Visual
-	["v|E"] = map_cmd(":m '>+1<cr>gv=gv"),
-	["v|U"] = map_cmd(":m '<-2<cr>gv=gv"),
-	["v|<"] = map_cmd("<gv"),
-	["v|>"] = map_cmd(">gv"),
-}
+local leader_map = function()
+	vim.g.mapleader = " "
+	vim.api.nvim_set_keymap("n", " ", "", { noremap = true })
+	vim.api.nvim_set_keymap("x", " ", "", { noremap = true })
+end
 
-bind.nvim_load_mapping(def_map)
+local neovide_config = function()
+	vim.cmd([[set guifont=JetBrainsMono\ Nerd\ Font:h12]])
+	vim.g.neovide_refresh_rate = 60
+	vim.g.neovide_cursor_vfx_mode = "railgun"
+	vim.g.neovide_no_idle = true
+	vim.g.neovide_cursor_animation_length = 0.03
+	vim.g.neovide_cursor_trail_length = 0.05
+	vim.g.neovide_cursor_antialiasing = true
+	vim.g.neovide_cursor_vfx_opacity = 200.0
+	vim.g.neovide_cursor_vfx_particle_lifetime = 1.2
+	vim.g.neovide_cursor_vfx_particle_speed = 20.0
+	vim.g.neovide_cursor_vfx_particle_density = 5.0
+end
+
+local load_core = function()
+	disable_distribution_plugins()
+	leader_map()
+
+	neovide_config()
+
+	require("core.options")
+	require("vscode.mapping")
+	
+end
+
+load_core()
