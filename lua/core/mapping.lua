@@ -5,7 +5,9 @@ local map_cmd = bind.map_cmd
 
 -- default map
 local def_map = {
-	-- MovceMent for colmak
+  
+  ["n|;"] = map_cmd(":"):with_noremap(),
+	--  MovceMent for colmak
 	["n|u"] = map_cmd("k"):with_noremap(),
 	["n|e"] = map_cmd("j"):with_noremap(),
 	["n|n"] = map_cmd("h"):with_noremap(),
