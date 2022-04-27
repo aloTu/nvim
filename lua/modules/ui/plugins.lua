@@ -30,8 +30,7 @@ ui["lewis6991/gitsigns.nvim"] = {
 ui["lukas-reineke/indent-blankline.nvim"] = {
 	opt = true,
 	event = "BufRead",
-  
-	config = conf.indent_blankline,
+	config = conf.indentblankline,
 }
 ui["akinsho/nvim-bufferline.lua"] = {
 	opt = true,
