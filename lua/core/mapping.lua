@@ -5,9 +5,9 @@ local map_cmd = bind.map_cmd
 
 -- default map
 local def_map = {
-  
+ 
   ["n|;"] = map_cmd(":"):with_noremap(),
-	--  MovceMent for colmak
+ 
 	["n|u"] = map_cmd("k"):with_noremap(),
 	["n|e"] = map_cmd("j"):with_noremap(),
 	["n|n"] = map_cmd("h"):with_noremap(),
@@ -38,8 +38,8 @@ local def_map = {
 	["n|<A-u>"] = map_cmd("<C-w>k"):with_noremap(),
 	["n|<A-[>"] = map_cr("vertical resize -5"):with_silent(),
 	["n|<A-]>"] = map_cr("vertical resize +5"):with_silent(),
-	["n|<A-;>"] = map_cr("resize -2"):with_silent(),
-	["n|<A-'>"] = map_cr("resize +2"):with_silent(),
+	["n|<A-,>"] = map_cr("resize -2"):with_silent(),
+	["n|<A-.>"] = map_cr("resize +2"):with_silent(),
 	["n|<C-q>"] = map_cmd(":wq<CR>"),
 	["n|<A-S-q>"] = map_cmd(":q!<CR>"),
 	["n|<leader>o"] = map_cr("setlocal spell! spelllang=en_us"),
