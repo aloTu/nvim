@@ -15,7 +15,11 @@ ui["hoob3rt/lualine.nvim"] = {
 	config = conf.lualine,
 }
 ui["arkav/lualine-lsp-progress"] = { opt = true, after = "nvim-gps" }
-ui["glepnir/dashboard-nvim"] = { opt = true, event = "BufWinEnter" }
+ui["goolord/alpha-nvim"] = {
+	opt = true,
+	event = "BufWinEnter",
+	config = conf.alpha,
+}
 ui["kyazdani42/nvim-tree.lua"] = {
 	opt = true,
 	event = "BufRead",

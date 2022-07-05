@@ -86,6 +86,13 @@ function autocmd.load_autocmds()
 				"nnoremap <leader>h :ClangdSwitchSourceHeaderVSplit<CR>",
 			},
 			{ "FileType", "dap-repl", "lua require('dap.ext.autocompl').attach()" },
+		},
+    yank = {
+			{
+				"TextYankPost",
+				"*",
+				[[silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=300})]],
+			},
 		}
 	}
 
