@@ -29,7 +29,7 @@ function config.alpha()
 		dashboard.button("comma s c", " Scheme change"),
 		dashboard.button("comma f r", " File frecency"),
 		dashboard.button("comma f e", " File history"),
-		dashboard.button("comma f e", " Project find"),
+		dashboard.button("comma f p", " Project find"),
 		dashboard.button("comma f f", " File find"),
 		dashboard.button("comma f n", " File new"),
 		dashboard.button("comma f w", " Word find"),
@@ -295,7 +295,7 @@ function config.nvim_tree()
 		},
 		update_focused_file = {
 			enable = true,
-			update_cwd = true,
+      update_root = true,
 			ignore_list = {},
 		},
 		ignore_ft_on_setup = {},
