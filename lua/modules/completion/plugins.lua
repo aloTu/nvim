@@ -3,7 +3,6 @@ local conf = require("modules.completion.config")
 
 completion["neovim/nvim-lspconfig"] = {
 	opt = true,
-  module = 'lspconfig',
 	event = "BufReadPre",
 	config = conf.nvim_lsp,
 }
@@ -12,13 +11,12 @@ completion["creativenull/efmls-configs-nvim"] = {
 	requires = "neovim/nvim-lspconfig",
 }
 completion["williamboman/nvim-lsp-installer"] = {
-	opt = true,
-	after = "nvim-lspconfig",
+	opt = false,
 }
-completion["RishabhRD/nvim-lsputils"] = {
+completion["kevinhwang91/nvim-bqf"] = {
 	opt = true,
-	after = "nvim-lspconfig",
-	config = conf.nvim_lsputils,
+	ft = "qf",
+	config = conf.bqf,
 }
 completion["tami5/lspsaga.nvim"] = {
 	opt = true,
@@ -48,12 +46,12 @@ completion["hrsh7th/nvim-cmp"] = {
 		{ "f3fora/cmp-spell", after = "cmp-path" },
 		{ "hrsh7th/cmp-buffer", after = "cmp-spell" },
 		{ "kdheepak/cmp-latex-symbols", after = "cmp-buffer" },
-		{
-		    'tzachar/cmp-tabnine',
-		    run = './install.sh',
-		    after = 'cmp-spell',
-		    config = conf.tabnine
-		}
+		-- {
+		-- 	"tzachar/cmp-tabnine",
+		-- 	run = "./install.sh",
+		-- 	after = "cmp-latex-symbols",
+		-- 	config = conf.tabnine,
+		-- },
 	},
 }
 completion["L3MON4D3/LuaSnip"] = {

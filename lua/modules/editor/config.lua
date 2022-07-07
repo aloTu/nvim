@@ -75,28 +75,6 @@ function config.matchup()
 	vim.cmd([[let g:matchup_matchparen_offscreen = {'method': 'popup'}]])
 end
 
-function config.nvim_gps()
-	require("nvim-gps").setup({
-		icons = {
-			["class-name"] = " ", -- Classes and class-like objects
-			["function-name"] = " ", -- Functions
-			["method-name"] = " ", -- Methods (functions inside class-like objects)
-		},
-		languages = {
-			-- You can disable any language individually here
-			["c"] = true,
-			["cpp"] = true,
-			["go"] = true,
-			["java"] = true,
-			["javascript"] = true,
-			["lua"] = true,
-			["python"] = true,
-			["rust"] = true,
-		},
-		separator = " > ",
-	})
-end
-
 function config.autotag()
 	require("nvim-ts-autotag").setup({
 		filetypes = {
@@ -188,25 +166,23 @@ function config.dapui()
 			edit = "e",
 			repl = "r",
 		},
-    layouts = {
-      {
-        elements = {
-          -- Provide as ID strings or tables with "id" and "size" keys
-          {
-            id = "scopes",
-            size = 0.25, -- Can be float or integer > 1
-          },
-          { id = "breakpoints", size = 0.25 },
-          { id = "stacks", size = 0.25 },
-          { id = "watches", size = 00.25 },
-        },
-        size = 40,
-        position = "left",
-      },
-      {
-		    elements = { "repl" }, size = 10, position = "bottom"
-      }
-    },
+		layouts = {
+			{
+				elements = {
+					-- Provide as ID strings or tables with "id" and "size" keys
+					{
+						id = "scopes",
+						size = 0.25, -- Can be float or integer > 1
+					},
+					{ id = "breakpoints", size = 0.25 },
+					{ id = "stacks", size = 0.25 },
+					{ id = "watches", size = 0.25 },
+				},
+				size = 40,
+				position = "left",
+			},
+			{ elements = { "repl" }, size = 10, position = "bottom" },
+		},
 		floating = {
 			max_height = nil,
 			max_width = nil,
@@ -220,13 +196,13 @@ function config.dap()
 	local dap = require("dap")
 	local dapui = require("dapui")
 
-	dap.listeners.after.event_initialized["dapui"] = function()
+	dap.listeners.after.event_initialized["dapui_config"] = function()
 		dapui.open()
 	end
-	dap.listeners.after.event_terminated["dapui"] = function()
+	dap.listeners.after.event_terminated["dapui_config"] = function()
 		dapui.close()
 	end
-	dap.listeners.after.event_exited["dapui"] = function()
+	dap.listeners.after.event_exited["dapui_config"] = function()
 		dapui.close()
 	end
 
@@ -383,6 +359,23 @@ function config.tabout()
 		},
 		exclude = {},
 	})
+end
+
+function config.imselect()
+	-- fcitx5 need a manual config
+	if vim.fn.executable("fcitx5-remote") == 1 then
+		vim.cmd([[
+		let g:im_select_get_im_cmd = ["fcitx5-remote"]
+		let g:im_select_default = '1'
+		let g:ImSelectSetImCmd = {
+			\ key ->
+			\ key == 1 ? ['fcitx5-remote', '-c'] :
+			\ key == 2 ? ['fcitx5-remote', '-o'] :
+			\ key == 0 ? ['fcitx5-remote', '-c'] :
+			\ execute("throw 'invalid im key'")
+			\ }
+			]])
+	end
 end
 
 return config

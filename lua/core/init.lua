@@ -54,7 +54,7 @@ end
 
 local neovide_config = function()
   vim.cmd([[set guifont=FiraCode\ NF:h16]])
-	vim.g.neovide_refresh_rate = 60
+	vim.g.neovide_refresh_rate = 120
 	vim.g.neovide_cursor_vfx_mode = "railgun"
 	vim.g.neovide_no_idle = true
 	vim.g.neovide_cursor_animation_length = 0.03
@@ -66,7 +66,7 @@ local neovide_config = function()
 	vim.g.neovide_cursor_vfx_particle_density = 5.0
 end
 
-local clipboard_settings = function()
+local clipboard_config = function()
 	vim.cmd([[
     let g:clipboard = {
           \   'name': 'win32yank-wsl',
@@ -91,7 +91,7 @@ local load_core = function()
 
 	pack.ensure_plugins()
 	neovide_config()
-	-- clipboard_settings()
+	-- clipboard_config()
 
 	require("core.options")
 	require("core.mapping")

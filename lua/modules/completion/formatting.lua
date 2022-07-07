@@ -1,57 +1,153 @@
 local M = {}
 
-local xor = function(bool, a, b)
-	if bool then
-		return a
-	else
-		return b
+local home = os.getenv("HOME")
+
+local disabled_worksapce_path = home .. "/.config/nvim/format_disabled_dirs.txt"
+local disabled_worksapce_file = io.open(disabled_worksapce_path, "r")
+local disabled_worksapce = {}
+
+if disabled_worksapce_file ~= nil then
+	for line in disabled_worksapce_file:lines() do
+		local str = line:gsub("%s+", "")
+		table.insert(disabled_worksapce, str)
 	end
 end
 
-local format_disabled_var = function()
-	return string.format("format_disabled_%s", vim.bo.filetype)
-end
-local format_options_var = function()
-	return string.format("format_options_%s", vim.bo.filetype)
+local format_on_save = true
+
+vim.api.nvim_create_user_command("FormatToggle", function()
+	M.toggle_format_on_save()
+end, {})
+
+local block_list = {}
+vim.api.nvim_create_user_command("SelectedFormatToggle", function(opts)
+	if block_list[opts.args] == nil then
+		print("Select disable format file type is " .. opts.args)
+		block_list[opts.args] = true
+		return
+	end
+	block_list[opts.args] = not block_list[opts.args]
+end, {
+	nargs = 1,
+	complete = function(_, _, _)
+		return {
+			"markdown",
+			"vim",
+			"lua",
+			"c",
+			"cpp",
+			"python",
+			"vue",
+			"typescript",
+			"javascript",
+			"yaml",
+			"html",
+			"css",
+			"scss",
+			"sh",
+			"rust",
+		}
+	end,
+})
+
+function M.enable_format_on_save(is_configured)
+	local opts = { pattern = "*", timeout = 1000 }
+	vim.api.nvim_create_augroup("format_on_save", {})
+	vim.api.nvim_create_autocmd("BufWritePre", {
+		group = "format_on_save",
+		pattern = opts.pattern,
+		callback = function()
+			require("modules.completion.formatting").format({ timeout_ms = opts.timeout, filter = M.format_filter })
+		end,
+	})
+	if not is_configured then
+		vim.notify("Enabled format-on-save", vim.log.levels.INFO)
+	end
 end
 
-local format_options_prettier = {
-	tabWidth = 4,
-	singleQuote = true,
-	trailingComma = "all",
-	configPrecedence = "prefer-file",
-}
-vim.g.format_options_typescript = format_options_prettier
-vim.g.format_options_javascript = format_options_prettier
-vim.g.format_options_typescriptreact = format_options_prettier
-vim.g.format_options_javascriptreact = format_options_prettier
-vim.g.format_options_json = format_options_prettier
-vim.g.format_options_css = format_options_prettier
-vim.g.format_options_scss = format_options_prettier
-vim.g.format_options_html = format_options_prettier
-vim.g.format_options_yaml = format_options_prettier
-vim.g.format_options_yaml = {
-	tabWidth = 2,
-	singleQuote = true,
-	trailingComma = "all",
-	configPrecedence = "prefer-file",
-}
-vim.g.format_options_markdown = format_options_prettier
-vim.g.format_options_sh = {
-	tabWidth = 4,
-}
-
-M.formatToggle = function(value)
-	local var = format_disabled_var()
-	vim.g[var] = xor(value ~= nil, value, not vim.g[var])
+function M.disable_format_on_save()
+	pcall(vim.api.nvim_del_augroup_by_name, "format_on_save")
+	vim.notify("Disabled format-on-save", vim.log.levels.INFO)
 end
-vim.cmd([[command! FormatDisable lua require'modules.completion.formatting'.formatToggle(true)]])
-vim.cmd([[command! FormatEnable lua require'modules.completion.formatting'.formatToggle(false)]])
 
-M.format = function()
-	if not vim.b.saving_format and not vim.g[format_disabled_var()] then
-		vim.b.init_changedtick = vim.b.changedtick
-		vim.lsp.buf.formatting(vim.g[format_options_var()] or {})
+function M.configure_format_on_save()
+	if format_on_save then
+		M.enable_format_on_save(true)
+	else
+		M.disable_format_on_save()
+	end
+end
+
+function M.toggle_format_on_save()
+	local status, _ = pcall(vim.api.nvim_get_autocmds, {
+		group = "format_on_save",
+		event = "BufWritePre",
+	})
+	if not status then
+		M.enable_format_on_save(false)
+	else
+		M.disable_format_on_save()
+	end
+end
+
+function M.format_filter(clients)
+	return vim.tbl_filter(function(client)
+		local status_ok, formatting_supported = pcall(function()
+			return client.supports_method("textDocument/formatting")
+		end)
+		if status_ok and formatting_supported and client.name == "efm" then
+			return "efm"
+		elseif client.name ~= "sumneko_lua" and client.name ~= "tsserver" and client.name ~= "clangd" then
+			return status_ok and formatting_supported and client.name
+		end
+	end, clients)
+end
+
+function M.format(opts)
+	local cwd = vim.fn.getcwd()
+	for i = 1, #disabled_worksapce do
+		if cwd.find(cwd, disabled_worksapce[i]) ~= nil then
+			return
+		end
+	end
+
+	local bufnr = opts.bufnr or vim.api.nvim_get_current_buf()
+	local clients = vim.lsp.buf_get_clients(bufnr)
+
+	if opts.filter then
+		clients = opts.filter(clients)
+	elseif opts.id then
+		clients = vim.tbl_filter(function(client)
+			return client.id == opts.id
+		end, clients)
+	elseif opts.name then
+		clients = vim.tbl_filter(function(client)
+			return client.name == opts.name
+		end, clients)
+	end
+
+	clients = vim.tbl_filter(function(client)
+		return client.supports_method("textDocument/formatting")
+	end, clients)
+
+	if #clients == 0 then
+		vim.notify("[LSP] Format request failed, no matching language servers.")
+	end
+
+	local timeout_ms = opts.timeout_ms
+	for _, client in pairs(clients) do
+		if block_list[vim.bo.filetype] == true then
+			vim.notify(string.format("[LSP][%s] format [%s] has disable", client.name, vim.bo.filetype))
+			return
+		end
+		local params = vim.lsp.util.make_formatting_params(opts.formatting_options)
+		local result, err = client.request_sync("textDocument/formatting", params, timeout_ms, bufnr)
+		if result and result.result then
+			vim.lsp.util.apply_text_edits(result.result, bufnr, client.offset_encoding)
+			vim.notify(string.format("Format successfully with %s!", client.name), vim.log.levels.INFO)
+		elseif err then
+			vim.notify(string.format("[LSP][%s] %s", client.name, err), vim.log.levels.WARN)
+		end
 	end
 end
 
